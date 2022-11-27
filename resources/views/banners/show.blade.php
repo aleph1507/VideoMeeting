@@ -49,6 +49,17 @@
             </div>
         </div>
 
+        @if($banner->category)
+            <div class="row mt-4">
+                <div class="col-2 text-end">
+                    <span>Category:</span>
+                </div>
+                <div class="col-7">
+                    <span><a href="{{route('categories.edit', $banner->category)}}">{{$banner->category->title}}</a></span>
+                </div>
+            </div>
+        @endif
+
         <div class="row mt-4">
             <div class="col-4 text-end">
                 <div class="row">

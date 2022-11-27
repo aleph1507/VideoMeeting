@@ -49,9 +49,9 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="category">Category:</label>
-                                <select name="category" id="category" class="selectpicker">
+                                <select name="category" id="category" class="form-select">
                                     @foreach($categories as $id => $title)
-                                        <option value="{{$id}}">{{$title}}</option>
+                                        <option value="{{$id}}" {{ old('category') == $id ? 'selected' : '' }}>{{$title}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -130,10 +130,6 @@
                     }
                 });
                 reader.readAsDataURL(this.files[0]);
-            });
-
-            $(function () {
-                $('select').selectpicker();
             });
         });
     </script>

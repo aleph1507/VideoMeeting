@@ -61,6 +61,23 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label for="category" class="col-md-4 col-form-label text-md-end">{{ __('Category') }}</label>
+
+                            <div class="col-md-6">
+                                <select name="category_id" id="category" class="form-select">
+                                    @foreach($categories as $id => $title)
+                                        <option value="{{$id}}">{{$title}}</option>
+                                    @endforeach
+                                </select>
+                                @error('category_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

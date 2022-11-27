@@ -1,4 +1,5 @@
 <?php /** @var \App\Models\Banner $banner; */ ?>
+<?php /** @var \App\Models\Category[] $categories; */ ?>
 
 @extends('layouts/app')
 
@@ -42,6 +43,19 @@
                                         <strong>{{ $errors->first('url') }}</strong>
                                     </div>
                                 @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select name="category" id="category" class="form-select">
+                                    @foreach($categories as $id => $title)
+                                        <option value="{{$id}}" {{ $banner->category?->id == $id ? 'selected' : '' }}>{{$title}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>

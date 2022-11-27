@@ -50,7 +50,8 @@ class BannerController extends Controller
             'name' => 'required|string',
             'url' => 'required|url',
             'media' => 'required|file|mimes:mp4,x-flv,x-mpegURL,MP2T,3gpp,quicktime,x-msvideo,x-ms-wmv,jpeg,png,jpg,gif,svg',
-            'media_type' => 'required|in:image,video'
+            'media_type' => 'required|in:image,video',
+            'category' => 'nullable|exists:categories,id'
         ]);
 
         $banner = new Banner();
@@ -62,6 +63,10 @@ class BannerController extends Controller
             }
 
             $banner->file_path = $filename;
+        }
+
+        if ($request->has('category')) {
+            $banner->category()->associate($request->get('category'));
         }
 
         $banner->url = $request->get('url');
@@ -95,7 +100,12 @@ class BannerController extends Controller
      */
     public function edit(Banner $banner)
     {
-        return view('banners.edit')->with('banner', $banner);
+        $categories = Category::orderBy('created_at', 'desc')
+            ->pluck('title', 'id')->prepend('', '');
+
+        return view('banners.edit')
+            ->with('banner', $banner)
+            ->with('categories', $categories);
     }
 
     /**
@@ -112,7 +122,8 @@ class BannerController extends Controller
             'name' => 'required|string',
             'url' => 'required|url',
             'media' => 'sometimes|file|mimes:mp4,x-flv,x-mpegURL,MP2T,3gpp,quicktime,x-msvideo,x-ms-wmv,jpeg,png,jpg,gif,svg',
-            'media_type' => 'required|in:image,video'
+            'media_type' => 'required|in:image,video',
+            'category' => 'nullable|exists:categories,id',
         ]);
 
         if ($file = $request->file('media')) {
@@ -127,6 +138,7 @@ class BannerController extends Controller
         $banner->name = $request->get('name');
         $banner->url = $request->get('url');
         $banner->file_type = $request->get('media_type');
+        $banner->category()->associate($request->get('category'));
 
         $banner->save();
 

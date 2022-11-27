@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BannerController;
@@ -20,6 +21,12 @@ use App\Http\Controllers\BannerController;
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('banners', BannerController::class);
     Route::resource('categories', CategoryController::class)->except('show');
+    Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('{user}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::get('{user}', [UserController::class, 'show'])->name('show');
+        Route::delete('{user}', [UserController::class, 'destroy'])->name('destroy');
+    });
 });
 
 Auth::routes();
