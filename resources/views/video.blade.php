@@ -27,7 +27,7 @@
     <script>
         function jitsiInit()
         {
-            const domain = 'meet.jit.si';
+            const domain = 'jitsi.rx-doctors.info';
             const options = {
                 roomName: '{{$roomName}}',
                 width: 600,
