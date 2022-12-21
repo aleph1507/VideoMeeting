@@ -36,7 +36,7 @@ class AddUsersAndCategories extends Migration
     public function down()
     {
         $adminEmail = env('ADMINISTRATOR_EMAIL', 'admin@administrator.com');
-        if ($administrator = User::where($adminEmail)->first()) {
+        if ($administrator = User::where('email', $adminEmail)->first()) {
             $administrator->delete();
         }
 

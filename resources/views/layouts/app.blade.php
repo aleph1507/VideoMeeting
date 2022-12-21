@@ -34,17 +34,19 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         @auth
-                            <li class="nav-item">
-                                <a href="{{ route('banners.index') }}" class="nav-link">Banners</a>
-                            </li>
+                            @can('admin_area')
+                                <li class="nav-item">
+                                    <a href="{{ route('banners.index') }}" class="nav-link">Banners</a>
+                                </li>
 
-                            <li class="nav-item">
-                                <a href="{{ route('categories.index') }}" class="nav-link">Categories</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('categories.index') }}" class="nav-link">Categories</a>
+                                </li>
 
-                            <li class="nav-item">
-                                <a href="{{ route('users.index') }}" class="nav-link">Users</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('users.index') }}" class="nav-link">Users</a>
+                                </li>
+                            @endcan
                         @endauth
                     </ul>
 
@@ -70,6 +72,8 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a href="{{ route('users.edit', Auth::user()) }}" class="dropdown-item">Edit</a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

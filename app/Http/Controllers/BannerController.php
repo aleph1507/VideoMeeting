@@ -31,7 +31,7 @@ class BannerController extends Controller
      */
     public function create()
     {
-        $categories = Category::orderBy('created_at', 'desc')
+        $categories = Category::noAdmin()->orderBy('created_at', 'desc')
             ->pluck('title', 'id')->prepend('', '');
 
         return view('banners.create')->with('categories', $categories);
@@ -74,9 +74,37 @@ class BannerController extends Controller
         $banner->name = $request->get('name');
         $banner->original_name = $file->getClientOriginalName();
 
+        $banner->html =  $this->generateHTML($banner);
+
         $banner->save();
 
         return redirect()->route('banners.show', $banner)->with('success', 'Banner saved');
+    }
+
+    private function generateHTML(Banner $banner): string
+    {
+        $media = $banner->file_type === Banner::IMAGE_FILE_TYPE ? $this->createImageHTML($banner) : $this->createVideoHTML($banner);
+        return $this->wrapAnchor($banner, $media);
+    }
+
+    private function wrapAnchor(Banner $banner, string $media): string
+    {
+        return '<a href="' . $banner->url . '">' . $media . '</a>';
+    }
+
+    private function createImageHTML(Banner $banner): string
+    {
+        return '<img src="' . asset($banner->storage_path) . '" class="img-fluid" alt="' . $banner->name . '">';
+    }
+
+    private function createVideoHTML(Banner $banner): string
+    {
+        $output = '<video autoplay loop muted id="video-tag">';
+        $output .= '<source id="video-source" src="' . asset($banner->storage_path) . '">';
+        $output .= 'Your browser does not support the video tag.';
+        $output .= '</video>';
+
+        return $output;
     }
 
     /**

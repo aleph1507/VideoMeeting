@@ -32,6 +32,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $category_id
  * @property-read \App\Models\Category|null $category
  * @method static \Illuminate\Database\Eloquent\Builder|Banner whereCategoryId($value)
+ * @property string $html
+ * @method static \Illuminate\Database\Eloquent\Builder|Banner whereHtml($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Banner forUser()
+ * @method static \Illuminate\Database\Eloquent\Builder|Banner ofCategory($category_id)
  */
 class Banner extends Model
 {
@@ -55,5 +59,15 @@ class Banner extends Model
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function scopeForUser($query)
+    {
+        return $query->where('category_id', request()->user()?->category_id);
+    }
+
+    public function scopeOfCategory($query, $category_id)
+    {
+        return $query->where('category_id', $category_id);
     }
 }

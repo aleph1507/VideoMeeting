@@ -39,6 +39,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int|null $category_id
  * @property-read \App\Models\Category|null $category
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCategoryId($value)
+ * @property-read bool $is_admin
  */
 class User extends Authenticatable
 {
@@ -78,5 +79,15 @@ class User extends Authenticatable
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function isPrimaryAdmin(): bool
+    {
+        return $this->email === env('ADMINISTRATOR_EMAIL', 'admin@administrator.com');
+    }
+
+    public function getIsAdminAttribute(): bool
+    {
+        return $this->category->title === Category::ADMINISTRATOR_CATEGORY_TITLE;
     }
 }

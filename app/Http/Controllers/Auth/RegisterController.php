@@ -58,7 +58,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'category_id' => ['nullable', 'exists:categories,id'],
+            'category_id' => ['required', 'exists:categories,id'],
         ]);
     }
 
@@ -69,7 +69,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm(): View
     {
-        $categories = Category::orderBy('created_at', 'desc')
+        $categories = Category::noAdmin()->orderBy('created_at', 'desc')
             ->pluck('title', 'id')->prepend('', '');
 
         return view('auth.register')->with('categories', $categories);

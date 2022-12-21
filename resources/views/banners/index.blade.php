@@ -23,6 +23,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Media Type</th>
+                        <th>Category</th>
                         <th>File Name</th>
                         <th></th>
                     </tr>
@@ -35,6 +36,11 @@
                             </td>
                             <td>{{$banner->name}}</td>
                             <td>{{$banner->file_type}}</td>
+                            <td>
+                                @if(isset($banner->category))
+                                    <a href="{{ route('categories.edit', $banner->category) }}">{{$banner->category->title}}</a>
+                                @endif
+                            </td>
                             <td>{{$banner->original_name}}</td>
                             <td>
                                 <a href="{{route('banners.show', $banner)}}" class="btn btn-primary btn-sm">

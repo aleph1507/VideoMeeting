@@ -37,7 +37,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="url">Banner URL:</label>
-                                <input type="text" name="url" class='form-control {{ ($errors->has('url') ? ' is-invalid' : '') }}' value="{{$banner->url}}" required>
+                                <input type="text" id="url" name="url" class='form-control {{ ($errors->has('url') ? ' is-invalid' : '') }}' value="{{$banner->url}}" required>
                                 @if($errors->has('url'))
                                     <div class="invalid-feedback">
                                         <strong>{{ $errors->first('url') }}</strong>

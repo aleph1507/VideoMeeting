@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 /**
  * App\Models\Category
@@ -24,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Banner[] $banners
  * @property-read int|null $banners_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Category noAdmin()
  */
 class Category extends Model
 {
@@ -31,12 +34,18 @@ class Category extends Model
 
     const ADMINISTRATOR_CATEGORY_TITLE = 'administrator';
 
-    public function users(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public static function scopeNoAdmin($query)
+    {
+
+        return $query->where('title', '!=', self::ADMINISTRATOR_CATEGORY_TITLE);
+    }
+
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
-    public function banners(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function banners(): HasMany
     {
         return $this->hasMany(Banner::class);
     }

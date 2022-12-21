@@ -59,5 +59,11 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-10 offset-1">
+                {{$users->links()}}
+            </div>
+        </div>
+
     </div>
 @endsection

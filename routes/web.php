@@ -19,12 +19,16 @@ use App\Http\Controllers\BannerController;
 */
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('banners', BannerController::class);
-    Route::resource('categories', CategoryController::class)->except('show');
+    Route::group(['middleware' => 'can:admin_area'], function () {
+        Route::resource('banners', BannerController::class);
+        Route::resource('categories', CategoryController::class)->except('show');
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
+    });
+
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
-        Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('{user}/edit', [UserController::class, 'edit'])->name('edit');
         Route::get('{user}', [UserController::class, 'show'])->name('show');
+        Route::put('{user}', [UserController::class, 'update'])->name('update');
         Route::delete('{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 });

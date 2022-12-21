@@ -22,6 +22,7 @@ class CreateBannersTable extends Migration
             $table->string('original_name');
             $table->enum('file_type', Banner::FILE_TYPES);
             $table->unsignedBigInteger('category_id')->nullable();
+            $table->text('html');
             $table->timestamps();
         });
     }
