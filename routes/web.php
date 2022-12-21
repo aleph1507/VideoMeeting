@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+        Route::get('{roomName}/meeting/', [UserController::class, 'meeting'])->name('meeting');
         Route::get('{user}/edit', [UserController::class, 'edit'])->name('edit');
         Route::get('{user}', [UserController::class, 'show'])->name('show');
         Route::put('{user}', [UserController::class, 'update'])->name('update');

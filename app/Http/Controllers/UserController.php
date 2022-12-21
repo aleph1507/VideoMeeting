@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\User;
 use Gate;
@@ -71,5 +72,15 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('users.index')->with('success', 'User deleted.');
+    }
+
+    public function meeting(string $roomName)
+    {
+        $user = User::where('roomName', $roomName)->firstOrFail();
+        $banner = Banner::forUser()->inRandomOrder()->first();
+        return view('video')
+            ->with('banner', $banner?->html)
+            ->with('roomName', $user->roomName)
+            ->with('displayName', $user->name);
     }
 }

@@ -58,6 +58,20 @@
                     <div class="row mt-3">
                         <div class="col-12">
                             <div class="form-group">
+                                <label for="roomName">Meetings room name:</label>
+                                <input type="text" name="roomName" id="roomName" class='form-control {{ ($errors->has('roomName') ? ' is-invalid' : '') }}' value="{{$user->roomName}}" required>
+                                @if($errors->has('roomName'))
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $errors->first('roomName') }}</strong>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="password">{{ __('Password') }}:</label>
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password" name="password">
                                 @error('password')

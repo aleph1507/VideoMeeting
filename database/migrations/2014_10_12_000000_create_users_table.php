@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('category_id')->nullable();
+            $table->string('roomName')->unique()->default(Str::uuid()->toString());
             $table->rememberToken();
             $table->timestamps();
         });

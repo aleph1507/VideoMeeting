@@ -40,6 +40,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read \App\Models\Category|null $category
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCategoryId($value)
  * @property-read bool $is_admin
+ * @property string $roomName
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRoomName($value)
  */
 class User extends Authenticatable
 {
@@ -55,6 +57,7 @@ class User extends Authenticatable
         'email',
         'password',
         'category_id',
+        'roomName'
     ];
 
     /**
@@ -89,5 +92,24 @@ class User extends Authenticatable
     public function getIsAdminAttribute(): bool
     {
         return $this->category->title === Category::ADMINISTRATOR_CATEGORY_TITLE;
+    }
+
+    public static function generateUserName(string $name, int $category_id)
+    {
+        $roomName = str_replace(' ', '_', $name);
+        if (!User::where('roomName', $roomName)->exists()) {
+            return $roomName;
+        }
+        $roomName .= '_' . str_replace(' ', '_', Category::find($category_id)->title);
+        if (!User::where('roomName', $roomName)->exists()) {
+            return $roomName;
+        }
+        for($index = 1;;$index++) {
+            $roomName = str_replace(' ', '_', $name);
+            $roomName .= '_' . $index;
+            if (!User::where('roomName', $roomName)->exists()) {
+                return $roomName;
+            }
+        }
     }
 }

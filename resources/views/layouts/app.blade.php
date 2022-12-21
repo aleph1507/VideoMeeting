@@ -47,6 +47,9 @@
                                     <a href="{{ route('users.index') }}" class="nav-link">Users</a>
                                 </li>
                             @endcan
+                            <li class="nav-item">
+                                <a href="{{ route('users.meeting', auth()->user()->roomName) }}" class="nav-link">Meetings</a>
+                            </li>
                         @endauth
                     </ul>
 
@@ -72,6 +75,8 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a href="{{ route('users.show', Auth::user()) }}" class="dropdown-item">Profile</a>
+
                                     <a href="{{ route('users.edit', Auth::user()) }}" class="dropdown-item">Edit</a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
