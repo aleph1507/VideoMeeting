@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::noAdmin()->orderBy('created_at', 'desc')->paginate(10);
+        $categories = Category::noAdmin()->noPatient()->orderBy('created_at', 'desc')->paginate(10);
         return view('categories.index')->with('categories', $categories);
     }
 
