@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Banner[] $banners
  * @property-read int|null $banners_count
  * @method static \Illuminate\Database\Eloquent\Builder|Category noAdmin()
+ * @method static \Illuminate\Database\Eloquent\Builder|Category noPatient()
  */
 class Category extends Model
 {

@@ -41,6 +41,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Banner ofCategory($category_id)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Stats[] $stats
  * @property-read int|null $stats_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Banner forRoom(string $roomName)
  */
 class Banner extends Model
 {
@@ -74,6 +75,12 @@ class Banner extends Model
     public function scopeForUser($query)
     {
         return $query->where('category_id', request()->user()?->category_id);
+    }
+
+    public function scopeForRoom($query, string $roomName)
+    {
+        $user = User::where('roomName', $roomName)->first();
+        return $query->where('category_id', $user->category_id);
     }
 
     public function scopeOfCategory($query, $category_id)

@@ -77,7 +77,7 @@ class UserController extends Controller
     public function meeting(string $roomName)
     {
         $user = User::where('roomName', $roomName)->firstOrFail();
-        $banner = Banner::forUser()->inRandomOrder()->first();
+        $banner = Banner::forRoom($roomName)->inRandomOrder()->first();
         return view('video')
             ->with('banner', $banner?->html)
             ->with('roomName', $user->roomName)
