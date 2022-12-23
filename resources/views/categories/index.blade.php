@@ -50,7 +50,7 @@
                             </td>
                             <td>{{$category->title}}</td>
                             <td class="text-end">
-                                @if(strtolower($category->title) !== strtolower(\App\Models\Category::ADMINISTRATOR_CATEGORY_TITLE))
+                                @if(strtolower($category->title) !== strtolower(\App\Models\Category::ADMINISTRATOR_CATEGORY_TITLE) || strtolower($category->title) !== strtolower(\App\Models\Category::PATIENT_CATEGORY_TITLE))
                                     <a href="{{route('categories.edit', $category)}}" class="btn btn-warning btn-sm">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
