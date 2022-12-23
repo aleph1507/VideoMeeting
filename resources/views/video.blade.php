@@ -4,6 +4,12 @@
 
 @section('content')
 <div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            {!! $banner !!}
+        </div>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
             <div class="container">
@@ -15,7 +21,7 @@
     </div>
 
     <div class="row">
-        <div class="col-12 mt-5 text-center">
+        <div class="col-12 text-center">
             {!! $banner !!}
         </div>
     </div>
