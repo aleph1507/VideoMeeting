@@ -89,7 +89,7 @@ class BannerController extends Controller
 
     private function wrapAnchor(Banner $banner, string $media): string
     {
-        return '<a href="' . $banner->url . '">' . $media . '</a>';
+        return '<a data-bid="' . $banner->id . '" class="ba" href="' . $banner->url . '">' . $media . '</a>';
     }
 
     private function createImageHTML(Banner $banner): string
@@ -171,6 +171,17 @@ class BannerController extends Controller
         $banner->save();
 
         return redirect()->route('banners.show', $banner)->with('success', 'Banner updated.');
+    }
+
+    public function regenerateBanners()
+    {
+        $banners = Banner::all();
+        foreach ($banners as $banner) {
+            $banner->html = $this->generateHTML($banner);
+            $banner->save();
+        }
+
+        return redirect()->back()->with('success', 'Banners HTML regenerated');
     }
 
     /**

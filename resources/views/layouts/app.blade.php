@@ -1,3 +1,4 @@
+<?php /** @var \App\Models\Stats $stats; */ ?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -146,6 +147,56 @@
             @yield('content')
         </main>
     </div>
+    <script>
+        function storeStats(csrfToken, bid, href = null)
+        {
+            fetch("{{route('stats.store')}}", {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-Token": csrfToken
+                },
+                method: "post",
+                credentials: "same-origin",
+                body: JSON.stringify({
+                    'bid': bid,
+                    'action': href ? '{{\App\Models\Stats::ACTION_CLICK}}' : '{{\App\Models\Stats::ACTION_SHOW}}'
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('Success:', data);
+                    if (href) {
+                        window.location.href = href;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    if (href) {
+                        window.location.href = href;
+                    }
+                });
+        }
+
+        window.onload = function () {
+            let baElements = document.getElementsByClassName('ba');
+            const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
+            if (baElements) {
+                for(let i = 0; i<baElements.length; i++) {
+                    let bid = baElements[i].dataset.bid;
+                    storeStats(csrfToken, bid); // store shown stats
+                    baElements[i].addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        let href = e.target.closest('a').getAttribute('href');
+
+                        storeStats(csrfToken, bid, href); // store clicked stats
+                    });
+                }
+            }
+        }
+    </script>
     @yield('footer-content')
 </body>
 </html>

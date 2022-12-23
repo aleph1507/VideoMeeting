@@ -63,6 +63,14 @@
                     @endforeach
                     </tbody>
                 </table>
+                <div class="row">
+                    <div class="col-6 offset-6">
+                        <form action="{{route('banners.regenerate')}}" method="post">
+                            @csrf
+                            <button class="btn btn-success w-100">Regenerate Banners</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
