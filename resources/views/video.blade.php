@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <div class="row mt-5">
+    <div class="row">
         <div class="col-12 mt-5 text-center">
             {!! $banner !!}
         </div>
