@@ -30,7 +30,11 @@
                                 <td>{{$user->email}}</td>
                                 <td>
                                     @if(isset($user->category))
-                                        <a href="{{route('categories.edit', $user->category)}}">{{$user->category?->title}}</a>
+                                        @if($user->category->title === \App\Models\Category::PATIENT_CATEGORY_TITLE)
+                                            {{ucfirst($user->category?->title)}}
+                                        @else
+                                            <a href="{{route('categories.edit', $user->category)}}">{{$user->category?->title}}</a>
+                                        @endif
                                     @endif
                                 </td>
                                 <td class="text-end">
