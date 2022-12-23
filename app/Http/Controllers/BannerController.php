@@ -116,7 +116,9 @@ class BannerController extends Controller
      */
     public function show(Banner $banner)
     {
-        return view('banners.show')->with('banner', $banner);
+        return view('banners.show')
+            ->with('banner', $banner)
+            ->with('stats', $banner->stats()->orderBy('date', 'desc')->paginate(5));
     }
 
     /**

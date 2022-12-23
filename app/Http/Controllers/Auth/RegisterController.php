@@ -72,7 +72,11 @@ class RegisterController extends Controller
         $categories = Category::noAdmin()->orderBy('created_at', 'desc')
             ->pluck('title', 'id')->prepend('', '');
 
-        return view('auth.register')->with('categories', $categories);
+        $patientCategoryId = Category::where('title', Category::PATIENT_CATEGORY_TITLE)->first()->id;
+
+        return view('auth.register')
+            ->with('categories', $categories)
+            ->with('patientCategoryId', $patientCategoryId);
     }
 
     /**

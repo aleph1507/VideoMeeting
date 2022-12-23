@@ -48,9 +48,12 @@
                                     <a href="{{ route('users.index') }}" class="nav-link">Users</a>
                                 </li>
                             @endcan
-                            <li class="nav-item">
-                                <a href="{{ route('users.meeting', auth()->user()->roomName) }}" class="nav-link">Meetings</a>
-                            </li>
+
+                            @if(Auth::user()->category->title !== \App\Models\Category::PATIENT_CATEGORY_TITLE)
+                                <li class="nav-item">
+                                    <a href="{{ route('users.meeting', auth()->user()->roomName) }}" class="nav-link">Meetings</a>
+                                </li>
+                            @endif
                         @endauth
                     </ul>
 

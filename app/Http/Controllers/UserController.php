@@ -47,7 +47,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => ['nullable', 'confirmed', 'min:8', 'confirmed'],
-            'category_id' => ['required', 'exists:categories,id'],
+            'category_id' => ['sometimes', 'exists:categories,id'],
         ]);
 
         $user->update($request->except('password'));

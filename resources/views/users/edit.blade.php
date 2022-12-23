@@ -42,32 +42,34 @@
                         </div>
                     </div>
 
-                    <div class="row mt-3">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="category">Category</label>
-                                <select name="category_id" id="category" class="form-select">
-                                    @foreach($categories as $id => $title)
-                                        <option value="{{$id}}" {{ $user->category?->id == $id ? 'selected' : '' }}>{{$title}}</option>
-                                    @endforeach
-                                </select>
+                    @if(Auth::user()->category->title !== \App\Models\Category::PATIENT_CATEGORY_TITLE)
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="category">Category</label>
+                                    <select name="category_id" id="category" class="form-select">
+                                        @foreach($categories as $id => $title)
+                                            <option value="{{$id}}" {{ $user->category?->id == $id ? 'selected' : '' }}>{{$title}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row mt-3">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="roomName">Meetings room name:</label>
-                                <input type="text" name="roomName" id="roomName" class='form-control {{ ($errors->has('roomName') ? ' is-invalid' : '') }}' value="{{$user->roomName}}" required>
-                                @if($errors->has('roomName'))
-                                    <div class="invalid-feedback">
-                                        <strong>{{ $errors->first('roomName') }}</strong>
-                                    </div>
-                                @endif
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="roomName">Meetings room name:</label>
+                                    <input type="text" name="roomName" id="roomName" class='form-control {{ ($errors->has('roomName') ? ' is-invalid' : '') }}' value="{{$user->roomName}}" required>
+                                    @if($errors->has('roomName'))
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $errors->first('roomName') }}</strong>
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                     <div class="row mt-3">
                         <div class="col-12">

@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('banners/regenerate', [BannerController::class, 'regenerateBanners'])->name('banners.regenerate');
         Route::resource('categories', CategoryController::class)->except('show');
         Route::get('users', [UserController::class, 'index'])->name('users.index');
-        Route::resource('stats', StatsController::class)->except('store');
+        Route::delete('{stats}', [StatsController::class, 'destroy'])->name('stats.destroy');
     });
 
     Route::group(['stats', 'as' => 'stats.'], function () {

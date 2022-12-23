@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 /**
  * App\Models\Stats
@@ -28,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Stats whereTotalViews($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Stats whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Banner $banner
  */
 class Stats extends Model
 {
@@ -37,4 +40,9 @@ class Stats extends Model
     const ACTION_CLICK = 'click';
 
     const ACTIONS = [self::ACTION_SHOW, self::ACTION_CLICK];
+
+    public function banner(): BelongsTo
+    {
+        return $this->belongsTo(Banner::class);
+    }
 }

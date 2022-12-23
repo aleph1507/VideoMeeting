@@ -38,19 +38,21 @@
                 <span>Category:</span>
             </div>
             <div class="col-7">
-                <span>{{$user->category->title}}</span>
+                <span>{{ucfirst($user->category->title)}}</span>
             </div>
         </div>
 
-        <div class="row mt-4">
-            <div class="col-2 text-end">
-                <span>Meetings Link:</span>
+        @if(Auth::user()->category->title !== \App\Models\Category::PATIENT_CATEGORY_TITLE)
+            <div class="row mt-4">
+                <div class="col-2 text-end">
+                    <span>Meetings Link:</span>
+                </div>
+                <div class="col-7">
+                    <span id="meetings-url">{{url(route('users.meeting', $user->roomName, false))}}</span>
+                    <button class="btn btn-primary btn-sm" id="copy-meetings-link">Copy</button>
+                </div>
             </div>
-            <div class="col-7">
-                <span id="meetings-url">{{url(route('users.meeting', $user->roomName, false))}}</span>
-                <button class="btn btn-primary btn-sm" id="copy-meetings-link">Copy</button>
-            </div>
-        </div>
+        @endif
 
         <div class="row mt-4">
             <div class="col-6 text-end">

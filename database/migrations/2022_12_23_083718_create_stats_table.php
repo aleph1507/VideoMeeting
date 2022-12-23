@@ -20,7 +20,7 @@ class CreateStatsTable extends Migration
             $table->unsignedBigInteger('banner_id');
             $table->unsignedInteger('total_views')->default(0);
             $table->unsignedInteger('total_clicks')->default(0);
-            $table->json('params');
+            $table->json('params')->nullable();
             $table->timestamps();
 
             $table->foreign('banner_id')->references('id')->on('banners')->onDelete('cascade');

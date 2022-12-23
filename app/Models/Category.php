@@ -33,11 +33,16 @@ class Category extends Model
     use HasFactory;
 
     const ADMINISTRATOR_CATEGORY_TITLE = 'administrator';
+    const PATIENT_CATEGORY_TITLE = 'patient';
 
     public static function scopeNoAdmin($query)
     {
-
         return $query->where('title', '!=', self::ADMINISTRATOR_CATEGORY_TITLE);
+    }
+
+    public static function scopeNoPatient($query)
+    {
+        return $query->where('title', '!=', self::PATIENT_CATEGORY_TITLE);
     }
 
     public function users(): HasMany

@@ -1,3 +1,5 @@
+
+
 @extends('layouts.app')
 
 @section('content')
@@ -62,12 +64,24 @@
                         </div>
 
                         <div class="row mb-3">
+                            <div class="col-md-6 offset-4">
+                                <div class="btn-group w-100" role="group" aria-label="User role select group">
+                                    <input type="radio" class="btn-check" name="role-radio" id="patient-radio" autocomplete="off" checked>
+                                    <label class="btn btn-outline-primary" for="patient-radio">I am a patient</label>
+
+                                    <input type="radio" class="btn-check" name="role-radio" id="doctor-radio" autocomplete="off">
+                                    <label class="btn btn-outline-primary" for="doctor-radio">I am a doctor</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 invisible" id="category-row">
                             <label for="category" class="col-md-4 col-form-label text-md-end">{{ __('Category') }}</label>
 
                             <div class="col-md-6">
                                 <select name="category_id" id="category" class="form-select">
                                     @foreach($categories as $id => $title)
-                                        <option value="{{$id}}">{{$title}}</option>
+                                        <option value="{{$id}}" {{$id == $patientCategoryId ? 'selected' : ''}}>{{$title}}</option>
                                     @endforeach
                                 </select>
                                 @error('category_id')
@@ -80,7 +94,7 @@
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary w-100">
                                     {{ __('Register') }}
                                 </button>
                             </div>
@@ -91,4 +105,84 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('footer-content')
+    <script>
+        function getSelectOption(selectEl, optionValue) {
+            for (let i = 0; i<selectEl.length; i++) {
+                if (selectEl.options[i].value === optionValue) {
+                    return selectEl.options[i];
+                }
+            }
+        }
+
+        function removeSelectOption(selectEl, optionValue) {
+            let option = null;
+            for(let i = 0; i<selectEl.length; i++) {
+                if (selectEl.options[i].value === optionValue) {
+                    selectEl.remove(i);
+                }
+            }
+
+            return option;
+        }
+
+        function selectOptionExists(selectEl, optionValue) {
+            for(let i = 0; i<selectEl.length; i++) {
+                if (selectEl.options[i].value === optionValue) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function addSelectOption(selectEl, option) {
+            if (!selectOptionExists(selectEl, option.value)) {
+                selectEl.add(option);
+                return true;
+            }
+            return false;
+        }
+
+        window.onload = function() {
+            let categoryRow = document.getElementById('category-row');
+            let patientRadio = document.getElementById('patient-radio');
+            let doctorRadio = document.getElementById('doctor-radio');
+            let categorySelect = document.getElementById('category');
+
+            let patientCategoryId = '{{$patientCategoryId}}';
+
+            let patientCategoryOption = getSelectOption(categorySelect, patientCategoryId);
+
+            console.log('patientCategoryOption', patientCategoryOption);
+            console.log('patientCategoryOption.value', patientCategoryOption.value);
+            console.log('patientCategoryOption.text', patientCategoryOption.text);
+
+            categorySelect.value = patientCategoryId;
+
+            patientRadio.addEventListener('click', function(e) {
+                if (!categoryRow.classList.contains('invisible')) {
+                    categoryRow.classList.add('invisible');
+                }
+
+                addSelectOption(categorySelect, patientCategoryOption);
+
+                categorySelect.value = patientCategoryId;
+            });
+
+            doctorRadio.addEventListener('click', function(e) {
+                removeSelectOption(categorySelect, patientCategoryId);
+                if (categoryRow.classList.contains('invisible')) {
+                    categoryRow.classList.remove('invisible');
+                }
+
+                categorySelect.value = null;
+
+                // removeSelectOption(categorySelect, patientCategoryId);
+            });
+
+        }
+    </script>
 @endsection

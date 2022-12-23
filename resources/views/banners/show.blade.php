@@ -1,4 +1,5 @@
 <?php /** @var \App\Models\Banner $banner; */ ?>
+<?php /** @var \App\Models\Stats $stat; */ ?>
 
 @extends('layouts/app')
 
@@ -102,6 +103,42 @@
                         Your browser does not support the video tag.
                     </video>
                 @endif
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row mt-4">
+            <div class="col-10 offset-1">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Clicks</th>
+                        <th>Views</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($stats as $stat)
+                            <tr>
+                                <td>{{$stat->date}}</td>
+                                <td>{{$stat->total_clicks}}</td>
+                                <td>{{$stat->total_views}}</td>
+                                <td>
+                                    <form action="{{route('stats.destroy', $stat)}}" class="d-inline" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {{$stats->links()}}
             </div>
         </div>
     </div>

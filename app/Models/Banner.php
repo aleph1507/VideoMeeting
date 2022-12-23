@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 /**
  * App\Models\Banner
@@ -36,6 +39,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Banner whereHtml($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Banner forUser()
  * @method static \Illuminate\Database\Eloquent\Builder|Banner ofCategory($category_id)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Stats[] $stats
+ * @property-read int|null $stats_count
  */
 class Banner extends Model
 {
@@ -56,9 +61,14 @@ class Banner extends Model
         return 'storage/' . self::BANNER_MEDIA_STORAGE_PATH . $this->file_path;
     }
 
-    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function stats(): HasMany
+    {
+        return $this->hasMany(Stats::class);
     }
 
     public function scopeForUser($query)
