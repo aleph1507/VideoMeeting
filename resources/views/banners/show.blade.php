@@ -116,6 +116,7 @@
                         <th>Date</th>
                         <th>Clicks</th>
                         <th>Views</th>
+                        <th>Details</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -125,6 +126,9 @@
                                 <td>{{$stat->date}}</td>
                                 <td>{{$stat->total_clicks}}</td>
                                 <td>{{$stat->total_views}}</td>
+                                <td>
+                                    <a href="{{route('banners.stats', $stat)}}"><i class="fa-solid fa-list-check"></i></a>
+                                </td>
                                 <td>
                                     <form action="{{route('stats.destroy', $stat)}}" class="d-inline" method="post">
                                         @csrf

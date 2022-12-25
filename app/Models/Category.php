@@ -36,6 +36,8 @@ class Category extends Model
     const ADMINISTRATOR_CATEGORY_TITLE = 'administrator';
     const PATIENT_CATEGORY_TITLE = 'patient';
 
+    const IMMUTABLES = [self::ADMINISTRATOR_CATEGORY_TITLE, self::PATIENT_CATEGORY_TITLE];
+
     public static function scopeNoAdmin($query)
     {
         return $query->where('title', '!=', self::ADMINISTRATOR_CATEGORY_TITLE);

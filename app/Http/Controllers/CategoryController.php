@@ -37,6 +37,10 @@ class CategoryController extends Controller
             'title' => 'required|string|unique:categories,title'
         ]);
 
+        if (in_array($category->title, [Category::ADMINISTRATOR_CATEGORY_TITLE, Category::PATIENT_CATEGORY_TITLE])) {
+            return redirect()->route('categories.index')->with('failure', 'This category is immutable');
+        }
+
         $category->title = $request->get('title');
         $category->save();
 

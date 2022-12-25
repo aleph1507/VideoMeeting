@@ -41,8 +41,24 @@ class Stats extends Model
 
     const ACTIONS = [self::ACTION_SHOW, self::ACTION_CLICK];
 
+    const NO_USER_MSG = 'Cannot find user';
+    const SEEN_ON_OWN_HOMEPAGE = 'Own homepage';
+    const NOT_AVAILABLE = 'N/A';
+
+    protected $fillable = ['params'];
+
+    protected $casts = [
+        'params' => 'array'
+    ];
+
     public function banner(): BelongsTo
     {
         return $this->belongsTo(Banner::class);
+    }
+
+    public function clearParams()
+    {
+        $this->params = null;
+        $this->save();
     }
 }

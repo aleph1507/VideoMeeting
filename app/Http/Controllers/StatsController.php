@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use App\Models\Stats;
+use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -43,18 +43,50 @@ class StatsController extends Controller
                 'required',
                 Rule::in(Stats::ACTIONS),
             ],
+            'url' => 'sometimes|nullable|url',
+            'hostUserId' => 'nullable|integer',
         ]);
 
         $date = Carbon::now()->format('Y-m-d');
         $banner = Banner::find($request->get('bid'));
         $stats = $banner->stats()->where('date', $date)->firstOrCreate();
         $stats->date = $date;
+
+        $params = $stats->params ?? [];
+
+        $params[] = [
+            'user' => $request?->user()?->id,
+            'action' => $request->get('action'),
+            'url' => $request->get('url'),
+            'hostUser' => $request->get('hostUserId'),
+        ];
+
         $request->get('action') === Stats::ACTION_SHOW ? $stats->total_views++ : $stats->total_clicks++;
+
+        $stats->params = $params;
+
         $stats->save();
 
         return json_encode([
             'stats' => 'stored',
         ]);
+    }
+
+    public function show(Stats $stats)
+    {
+        $params = $stats->params;
+        if ($params) {
+            for ($i = 0; $i<count($params); $i++) {
+                $params[$i]['user'] = User::find($params[$i]['user']);
+                $params[$i]['hostUser'] = isset($params[$i]['hostUser']) ? User::find($params[$i]['hostUser']) : Stats::NOT_AVAILABLE;
+            }
+        }
+
+//        dd($params);
+
+        return view('banners.stats.show')
+            ->with('stats', $stats)
+            ->with('params', $params);
     }
 
     /**

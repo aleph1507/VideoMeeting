@@ -31,7 +31,7 @@ class BannerController extends Controller
      */
     public function create()
     {
-        $categories = Category::noAdmin()->orderBy('created_at', 'desc')
+        $categories = Category::noAdmin()->noPatient()->orderBy('created_at', 'desc')
             ->pluck('title', 'id')->prepend('', '');
 
         return view('banners.create')->with('categories', $categories);

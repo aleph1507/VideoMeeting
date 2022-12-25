@@ -30,7 +30,7 @@
                                 <td>{{$user->email}}</td>
                                 <td>
                                     @if(isset($user->category))
-                                        @if($user->category->title === \App\Models\Category::PATIENT_CATEGORY_TITLE)
+                                        @if(in_array($user->category->title, \App\Models\Category::IMMUTABLES))
                                             {{ucfirst($user->category?->title)}}
                                         @else
                                             <a href="{{route('categories.edit', $user->category)}}">{{$user->category?->title}}</a>

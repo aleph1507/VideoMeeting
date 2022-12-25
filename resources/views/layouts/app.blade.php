@@ -151,8 +151,12 @@
         </main>
     </div>
     <script>
+        let storedViewedBids = [];
+
         function storeStats(csrfToken, bid, href = null)
         {
+            if (!href && storedViewedBids.includes(bid)) return;
+            storedViewedBids.push(bid);
             fetch("{{route('stats.store')}}", {
                 headers: {
                     "Content-Type": "application/json",
@@ -164,7 +168,9 @@
                 credentials: "same-origin",
                 body: JSON.stringify({
                     'bid': bid,
-                    'action': href ? '{{\App\Models\Stats::ACTION_CLICK}}' : '{{\App\Models\Stats::ACTION_SHOW}}'
+                    'action': href ? '{{\App\Models\Stats::ACTION_CLICK}}' : '{{\App\Models\Stats::ACTION_SHOW}}',
+                    'url': '{{\Illuminate\Support\Facades\URL::current()}}',
+                    'hostUserId': '{{$hostUserId ?? null}}',
                 }),
             })
                 .then((response) => response.json())
@@ -182,12 +188,13 @@
                 });
         }
 
-        window.onload = function () {
+        document.addEventListener('DOMContentLoaded', function () {
             let baElements = document.getElementsByClassName('ba');
             const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
             if (baElements) {
                 for(let i = 0; i<baElements.length; i++) {
                     let bid = baElements[i].dataset.bid;
+
                     storeStats(csrfToken, bid); // store shown stats
                     baElements[i].addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -198,7 +205,7 @@
                     });
                 }
             }
-        }
+        });
     </script>
     @yield('footer-content')
 </body>

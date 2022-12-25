@@ -42,7 +42,7 @@
                         </div>
                     </div>
 
-                    @if(Auth::user()->category->title !== \App\Models\Category::PATIENT_CATEGORY_TITLE)
+                    @if($user->category->title !== \App\Models\Category::PATIENT_CATEGORY_TITLE)
                         <div class="row mt-3">
                             <div class="col-12">
                                 <div class="form-group">

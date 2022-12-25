@@ -22,6 +22,7 @@ use App\Http\Controllers\BannerController;
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'can:admin_area'], function () {
         Route::resource('banners', BannerController::class);
+        Route::get('banners/stats/{stats}', [StatsController::class, 'show'])->name('banners.stats');
         Route::post('banners/regenerate', [BannerController::class, 'regenerateBanners'])->name('banners.regenerate');
         Route::resource('categories', CategoryController::class)->except('show');
         Route::get('users', [UserController::class, 'index'])->name('users.index');

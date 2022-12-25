@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\Stats;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(?Stats $stats = null)
     {
         abort_if(Gate::denies('admin_area'), 403);
         $users = User::orderBy('created_at', 'desc')->paginate(10);
@@ -81,6 +82,7 @@ class UserController extends Controller
         return view('video')
             ->with('banner', $banner?->html)
             ->with('roomName', $user->roomName)
-            ->with('displayName', $user->name);
+            ->with('displayName', $user->name)
+            ->with('hostUserId', $user->id);
     }
 }
