@@ -6,7 +6,6 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Banner;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 
 
 class BannerController extends Controller
@@ -74,8 +73,11 @@ class BannerController extends Controller
         $banner->name = $request->get('name');
         $banner->original_name = $file->getClientOriginalName();
 
-        $banner->html =  $this->generateHTML($banner);
+        $banner->html = '';
 
+        $banner->save();
+
+        $banner->html = $this->generateHTML($banner);
         $banner->save();
 
         return redirect()->route('banners.show', $banner)->with('success', 'Banner saved');
@@ -85,6 +87,11 @@ class BannerController extends Controller
     {
         $media = $banner->file_type === Banner::IMAGE_FILE_TYPE ? $this->createImageHTML($banner) : $this->createVideoHTML($banner);
         return $this->wrapAnchor($banner, $media);
+    }
+
+    private function createMediaHTML(Banner $banner): string
+    {
+        return $banner->file_type === Banner::IMAGE_FILE_TYPE ? $this->createImageHTML($banner) : $this->createVideoHTML($banner);
     }
 
     private function wrapAnchor(Banner $banner, string $media): string
